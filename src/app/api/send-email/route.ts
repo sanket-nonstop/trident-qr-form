@@ -3,12 +3,12 @@ import nodemailer from 'nodemailer';
 
 export async function POST(request: Request) {
   try {
-    const { firstName, lastName /*, captchaToken */ } = await request.json();
+    const { firstName, lastName, email /*, captchaToken */ } = await request.json();
 
     // Basic validation
-    if (!firstName || !lastName /* || !captchaToken */) {
+    if (!firstName || !lastName || !email /* || !captchaToken */) {
       return NextResponse.json(
-        { error: 'First name and last name are required' },
+        { error: 'First name, last name, and email are required' },
         { status: 400 }
       );
     }
@@ -49,6 +49,7 @@ export async function POST(request: Request) {
 
 First Name: ${firstName}
 Last Name: ${lastName}
+Email: ${email}
 
 User confirmed:
 - Watched induction video
