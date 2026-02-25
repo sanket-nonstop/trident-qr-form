@@ -154,7 +154,7 @@ export default function InductionPage() {
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
                         placeholder="e.g. John"
-                        className="premium-input w-full px-6 py-4.5 rounded-2xl text-white outline-none placeholder:text-slate-600 shadow-inner"
+                        className="premium-input w-full px-6 py-4.5 rounded-2xl text-white outline-none shadow-inner"
                       />
                     </div>
                     <div className="relative group">
@@ -166,7 +166,7 @@ export default function InductionPage() {
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
                         placeholder="e.g. Doe"
-                        className="premium-input w-full px-6 py-4.5 rounded-2xl text-white outline-none placeholder:text-slate-600 shadow-inner"
+                        className="premium-input w-full px-6 py-4.5 rounded-2xl text-white outline-none shadow-inner"
                       />
                     </div>
                     <div className="relative group">
@@ -178,7 +178,7 @@ export default function InductionPage() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="john.doe@example.com"
-                        className="premium-input w-full px-6 py-4.5 rounded-2xl text-white outline-none placeholder:text-slate-600 shadow-inner"
+                        className="premium-input w-full px-6 py-4.5 rounded-2xl text-white outline-none shadow-inner"
                       />
                     </div>
                   </div>

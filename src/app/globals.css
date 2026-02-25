@@ -9,7 +9,6 @@
   --glass-border: rgba(222, 204, 191, 0.3);
   --card-bg: #0f172a;
   --input-bg: #0a0f1e;
-  /* Slightly lighter than pure black */
 }
 
 @theme inline {
@@ -43,7 +42,15 @@ body {
   box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5) !important;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
   color: #ffffff !important;
-  font-weight: 500;
+  font-family: 'Inter', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.025em !important;
+}
+
+.premium-input::placeholder {
+  color: rgba(222, 204, 191, 0.4) !important;
+  letter-spacing: 0.05em;
+  font-weight: 400;
 }
 
 .premium-input:focus {
@@ -53,12 +60,11 @@ body {
   outline: none !important;
 }
 
-/* Premium Button Styling - Fixed Contrast and States */
+/* Premium Button Styling */
 .gold-button {
   background: linear-gradient(135deg, #bfa693 0%, #deccbf 45%, #ffffff 50%, #deccbf 55%, #bfa693 100%);
   background-size: 200% 100%;
   color: #000000 !important;
-  /* Force black text */
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.15em;
