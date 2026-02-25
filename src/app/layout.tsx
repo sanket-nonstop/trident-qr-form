@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Site Induction | Trident Group",
-  description: "Trident Group Site Induction and Safety Agreement Form",
+  title: "Trident Group Induction | Trident Group",
+  description: "Trident Group Trident Group Induction and Safety Agreement Form",
 };
 
 export default function RootLayout({
