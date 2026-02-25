@@ -190,9 +190,9 @@ export default function InductionPage() {
                           type="checkbox"
                           checked={videoWatched}
                           onChange={(e) => setVideoWatched(e.target.checked)}
-                          className="peer appearance-none w-6 h-6 rounded-lg border-2 border-primary/40 bg-slate-900 appearance-none checked:bg-primary checked:border-primary transition-all cursor-pointer shadow-lg"
+                          className="peer appearance-none w-5 h-5 rounded-md border-2 border-primary/40 bg-slate-900 appearance-none checked:bg-primary checked:border-primary transition-all cursor-pointer shadow-lg"
                         />
-                        <svg className="absolute top-1 left-1 w-4 h-4 text-slate-950 opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="absolute top-1 left-1 w-3 h-3 text-slate-950 opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M5 13l4 4L19 7"></path>
                         </svg>
                       </div>
@@ -207,9 +207,9 @@ export default function InductionPage() {
                           type="checkbox"
                           checked={agreeSaftey}
                           onChange={(e) => setAgreeSaftey(e.target.checked)}
-                          className="peer appearance-none w-6 h-6 rounded-lg border-2 border-primary/40 bg-slate-900 appearance-none checked:bg-primary checked:border-primary transition-all cursor-pointer shadow-lg"
+                          className="peer appearance-none w-5 h-5 rounded-md border-2 border-primary/40 bg-slate-900 appearance-none checked:bg-primary checked:border-primary transition-all cursor-pointer shadow-lg"
                         />
-                        <svg className="absolute top-1 left-1 w-4 h-4 text-slate-950 opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="absolute top-1 left-1 w-3 h-3 text-slate-950 opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M5 13l4 4L19 7"></path>
                         </svg>
                       </div>
