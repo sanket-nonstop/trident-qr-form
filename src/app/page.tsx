@@ -12,6 +12,7 @@ export default function InductionPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   // const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [showValidation, setShowValidation] = useState(false);
   const recaptchaRef = useRef<any>(null);
 
   // Robust validation
@@ -26,7 +27,10 @@ export default function InductionPage() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!isFormValid) return;
+    if (!isFormValid) {
+      setShowValidation(true);
+      return;
+    }
 
     setIsSubmitting(true);
     setMessage(null);
@@ -92,7 +96,7 @@ export default function InductionPage() {
 
               <div className="p-5 bg-black/50 backdrop-blur-md flex items-center justify-between border-b border-primary/20">
                 <div className="flex items-center gap-3 text-white">
-                  <span className="text-[14px] font-bold text-slate-100 uppercase tracking-[0.2em] ml-2 font-mono">Safety Induction</span>
+                  <span className="text-sm md:text-lg font-black text-slate-100 uppercase tracking-[0.2em] ml-0 md:ml-2 font-mono">Safety Induction</span>
                 </div>
                 <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/30">
                   <span className="text-[12px] font-bold text-primary uppercase tracking-widest">Mandatory</span>
@@ -156,6 +160,9 @@ export default function InductionPage() {
                         placeholder="e.g. John"
                         className="premium-input w-full px-6 py-4.5 rounded-2xl text-white outline-none shadow-inner"
                       />
+                      {showValidation && firstName.trim().length === 0 && (
+                        <p className="mt-2 text-rose-500 text-xs font-bold uppercase tracking-wider animate-fade-in">First name is required</p>
+                      )}
                     </div>
                     <div className="relative group">
                       <label htmlFor="lastName" className="block text-[11px] font-medium text-slate-300 uppercase tracking-[0.3em] mb-3 group-focus-within:text-primary transition-colors">Last Name</label>
@@ -168,6 +175,9 @@ export default function InductionPage() {
                         placeholder="e.g. Doe"
                         className="premium-input w-full px-6 py-4.5 rounded-2xl text-white outline-none shadow-inner"
                       />
+                      {showValidation && lastName.trim().length === 0 && (
+                        <p className="mt-2 text-rose-500 text-xs font-bold uppercase tracking-wider animate-fade-in">Last name is required</p>
+                      )}
                     </div>
                     <div className="relative group">
                       <label htmlFor="email" className="block text-[11px] font-medium text-slate-300 uppercase tracking-[0.3em] mb-3 group-focus-within:text-primary transition-colors">Email Address</label>
@@ -180,6 +190,9 @@ export default function InductionPage() {
                         placeholder="john.doe@example.com"
                         className="premium-input w-full px-6 py-4.5 rounded-2xl text-white outline-none shadow-inner"
                       />
+                      {showValidation && (email.trim().length === 0 || !email.includes('@') || !email.includes('.')) && (
+                        <p className="mt-2 text-rose-500 text-xs font-bold uppercase tracking-wider animate-fade-in">Valid email is required</p>
+                      )}
                     </div>
                   </div>
 
@@ -219,6 +232,17 @@ export default function InductionPage() {
                     </label>
                   </div>
 
+                  {showValidation && (!videoWatched || !agreeSaftey) && (
+                    <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 animate-fade-in">
+                      {!videoWatched && (
+                        <p className="text-rose-500 text-xs font-bold uppercase tracking-wider mb-1">Please watch the safety induction video</p>
+                      )}
+                      {!agreeSaftey && (
+                        <p className="text-rose-500 text-xs font-bold uppercase tracking-wider">Please agree to safety measures</p>
+                      )}
+                    </div>
+                  )}
+
                   {/* reCAPTCHA (Commented Out)
                   <div className="flex justify-center py-2 overflow-hidden">
                     <div className="transform scale-[0.9] sm:scale-100 origin-center">
@@ -242,8 +266,9 @@ export default function InductionPage() {
                   <div className="space-y-4">
                     <button
                       type="submit"
-                      disabled={!isFormValid || isSubmitting}
-                      className="gold-button w-full py-5 rounded-2xl border border-primary/40"
+                      disabled={isSubmitting}
+                      className={`gold-button w-full py-4 md:py-5 rounded-2xl border border-primary/40 text-[13px] sm:text-sm md:text-base lg:text-lg transition-all ${!isFormValid ? 'opacity-70 cursor-not-allowed hover:transform-none' : ''
+                        }`}
                     >
                       {isSubmitting ? (
                         <span className="flex items-center justify-center gap-3">
