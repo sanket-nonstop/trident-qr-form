@@ -146,7 +146,7 @@ export default function InductionPage() {
                 <form onSubmit={handleSubmit} className="space-y-8">
                   <div className="space-y-6">
                     <div className="relative group">
-                      <label htmlFor="firstName" className="block text-[12px] font-black text-slate-100 uppercase tracking-[0.3em] mb-3 group-focus-within:text-primary transition-colors">First Name</label>
+                      <label htmlFor="firstName" className="block text-[11px] font-medium text-slate-300 uppercase tracking-[0.3em] mb-3 group-focus-within:text-primary transition-colors">First Name</label>
                       <input
                         id="firstName"
                         type="text"
@@ -158,7 +158,7 @@ export default function InductionPage() {
                       />
                     </div>
                     <div className="relative group">
-                      <label htmlFor="lastName" className="block text-[12px] font-black text-slate-100 uppercase tracking-[0.3em] mb-3 group-focus-within:text-primary transition-colors">Last Name</label>
+                      <label htmlFor="lastName" className="block text-[11px] font-medium text-slate-300 uppercase tracking-[0.3em] mb-3 group-focus-within:text-primary transition-colors">Last Name</label>
                       <input
                         id="lastName"
                         type="text"
@@ -170,7 +170,7 @@ export default function InductionPage() {
                       />
                     </div>
                     <div className="relative group">
-                      <label htmlFor="email" className="block text-[12px] font-black text-slate-100 uppercase tracking-[0.3em] mb-3 group-focus-within:text-primary transition-colors">Email</label>
+                      <label htmlFor="email" className="block text-[11px] font-medium text-slate-300 uppercase tracking-[0.3em] mb-3 group-focus-within:text-primary transition-colors">Email Address</label>
                       <input
                         id="email"
                         type="email"
@@ -264,9 +264,12 @@ export default function InductionPage() {
                     </button>
 
                     {/* {!isFormValid && !isSubmitting && (
-                      <div className="text-center animate-pulse">
-                        <p className="text-[14px] font-black text-primary uppercase tracking-[0.4em]">
+                      <div className="text-center animate-pulse py-2">
+                        <p className="text-[12px] font-black text-primary uppercase tracking-[0.3em] drop-shadow-sm">
                           Safety Verification Required
+                        </p>
+                        <p className="text-[10px] text-slate-300 mt-2 uppercase tracking-widest font-medium leading-relaxed">
+                          Please fill all fields & accept agreement terms
                         </p>
                       </div>
                     )} */}
@@ -274,12 +277,12 @@ export default function InductionPage() {
                 </form>
               </div>
 
-              <div className="px-10 py-5 bg-black/40 border-t border-primary/30 text-center">
+              {/* <div className="px-10 py-5 bg-black/40 border-t border-primary/30 text-center">
                 <p className="text-[10px] font-bold text-slate-300 uppercase tracking-widest flex items-center justify-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                   Trident Secured Access Protocol
                 </p>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
