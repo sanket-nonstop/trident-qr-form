@@ -121,10 +121,12 @@ function getTransporter() {
   const servername = process.env.SMTP_SERVERNAME;
 
   if (!host || !user || !pass) {
-    throw new Error("Server misconfigured: missing SMTP settings (SMTP_HOST, SMTP_USER, SMTP_PASS)");
+    throw new Error(
+      "Server misconfigured: missing SMTP settings (SMTP_HOST, SMTP_USER, SMTP_PASS)",
+    );
   }
 
-  return nodemailer.createTransport({
+  const options = {
     host,
     port,
     secure,
@@ -136,18 +138,26 @@ function getTransporter() {
       rejectUnauthorized: false,
       ...(servername && { servername }),
     },
-  });
+  };
+
+  return nodemailer.createTransport(options);
 }
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    if (process.env.NODE_ENV === "development") {
+      console.log("[send-email] Captcha field check", {
+        hasCaptchaToken: Boolean(body?.captchaToken),
+        hasToken: Boolean(body?.token),
+      });
+    }
 
     const payload = {
       firstName: sanitizeText(body?.firstName),
       lastName: sanitizeText(body?.lastName),
       email: sanitizeText(body?.email),
-      token: body?.captchaToken,
+      token: body?.captchaToken || body?.token,
     };
 
     if (!payload.firstName) {
@@ -170,26 +180,23 @@ export async function POST(request: NextRequest) {
         { status: 400 },
       );
     }
-
-    // const captcha = await verifyRecaptcha({ token: payload.token });
-    // if (!captcha.ok) {
-    //   return NextResponse.json(
-    //     { success: false, message: captcha.reason || "Captcha failed" },
-    //     { status: 400 },
-    //   );
-    // }
-
-    const to = process.env.CONTACT_TO_EMAIL;
-    const from = process.env.CONTACT_FROM_EMAIL;
-    if (!from) {
+// // Verify reCAPTCHA
+    const captcha = await verifyRecaptcha({ token: payload.token });
+    if (!captcha.ok) {
       return NextResponse.json(
-        { success: false, message: "Server misconfigured: set CONTACT_FROM_EMAIL in environment" },
-        { status: 500 },
+        { success: false, message: captcha.reason || "Captcha failed" },
+        { status: 400 },
       );
     }
-    if (!to) {
+
+    const to = process.env.CONTACT_EMAIL;
+    const from = process.env.CONTACT_EMAIL;
+    if (!to || !from) {
       return NextResponse.json(
-        { success: false, message: "Server misconfigured: set CONTACT_TO_EMAIL in environment" },
+        {
+          success: false,
+          message: "Server misconfigured: set CONTACT_EMAIL in environment",
+        },
         { status: 500 },
       );
     }
@@ -200,15 +207,67 @@ export async function POST(request: NextRequest) {
       replyTo: payload.email,
       subject: "Trident Group Induction Form Submission",
       // text: buildTextBody(payload),
-      html: `Trident Group Induction Completed
+      html: `<table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, Helvetica, sans-serif; background:#f6f7fb; padding:20px;">
+  <tr>
+    <td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.05);">
 
-First Name: ${payload.firstName}
-Last Name: ${payload.lastName}
-Email: ${payload.email}
+    <!-- Header -->
+    <tr>
+      <td style="background:#1e3a8a; color:#ffffff; padding:20px; text-align:center;">
+        <h2 style="margin:0;">Trident Group</h2>
+        <p style="margin:5px 0 0; font-size:14px;">Induction Completion Confirmation</p>
+      </td>
+    </tr>
 
-User confirmed:
-- Watched induction video
-- Agrees to follow safety measures`,
+    <!-- Content -->
+    <tr>
+      <td style="padding:30px;">
+        <p style="margin-top:0; font-size:15px;">
+          A user has successfully completed the <strong>Trident Group Safety Induction</strong>.
+        </p>
+
+        <table width="100%" cellpadding="8" cellspacing="0" style="margin-top:15px; border-collapse:collapse;">
+          <tr style="background:#f3f4f6;">
+            <td width="40%"><strong>First Name</strong></td>
+            <td>${payload.firstName}</td>
+          </tr>
+          <tr>
+            <td><strong>Last Name</strong></td>
+            <td>${payload.lastName}</td>
+          </tr>
+          <tr style="background:#f3f4f6;">
+            <td><strong>Email</strong></td>
+            <td>${payload.email}</td>
+          </tr>
+        </table>
+
+        <p style="margin-top:25px;"><strong>User Confirmation:</strong></p>
+
+        <ul style="padding-left:18px; margin-top:10px; font-size:14px;">
+          <li>Watched the induction safety video</li>
+          <li>Agreed to comply with all safety measures and guidelines</li>
+        </ul>
+
+        <p style="margin-top:25px; font-size:14px; color:#555;">
+          This confirmation indicates that the user understands and accepts the safety procedures required by Trident Group.
+        </p>
+      </td>
+    </tr>
+
+    <!-- Footer -->
+    <tr>
+      <td style="background:#f3f4f6; text-align:center; padding:15px; font-size:12px; color:#666;">
+        © ${new Date().getFullYear()} Trident Group. All rights reserved.
+      </td>
+    </tr>
+
+  </table>
+</td>
+
+  </tr>
+</table>
+`,
     };
 
     const transporter = getTransporter();
@@ -217,15 +276,11 @@ User confirmed:
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
     const err = error instanceof Error ? error : new Error("Unknown error");
-    console.error("[send-email]", err.message);
     const isDev = process.env.NODE_ENV === "development";
     const message =
       isDev && err.message
         ? err.message
         : "Something went wrong. Please try again.";
-    return NextResponse.json(
-      { success: false, message },
-      { status: 500 },
-    );
+    return NextResponse.json({ success: false, message }, { status: 500 });
   }
 }
